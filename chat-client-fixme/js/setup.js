@@ -7,7 +7,7 @@ $.ajaxPrefilter(function(settings, _, jqXHR) {
 //-------------- BEGIN VARIABLE/FUNCTION DECLARATIONS ---------------------
 
 var SERVER_URL = 'http://parse.shared.hackreactor.com/chatterbox/classes/messages';
-
+var dataS;
 //This one calls the Parse server to grab data, and sends it to processData
 var getData = function() {
   $.ajax(SERVER_URL + '?order=-createdAt', {
@@ -34,6 +34,7 @@ var processData = function(data) {
       return 1;
     }
   });
+  dataS = {results: sortedData};
   displayData({results: sortedData}, userSelected); // eslint-disable-line no-use-before-define
 };
 
@@ -50,7 +51,7 @@ var checkNewData = function(data) {
 var userSelectedGroup = {};
 var newestDate = new Date();
 var userSelected;
-
+ 
 var displayData = function(data, user) {
   var $results = [];
   var resultCount = 0;
@@ -104,6 +105,7 @@ var displayData = function(data, user) {
   });
 };
 
+//this is the function responsible for sending messages to the server
 var postData = function(message, username) {
   $.ajax({
     url: SERVER_URL,
@@ -112,9 +114,20 @@ var postData = function(message, username) {
     data: JSON.stringify({
       username: username,
       text: message
+      // ,createdAt: new Date()
     }),
     success: function(data) {
       console.log('Success!', data);
+      console.log([...dataS.results, {
+        ...data,
+        username: username,
+        text: message}])
+      if(checkNewData({results: [...dataS.results, {
+        ...data,
+        username: username,
+        text: message}] })){
+        getData();
+      }
     },
     error: function(data) {
       console.log(data);

@@ -1,9 +1,9 @@
 body {
     background-image: -moz-radial-gradient(center, ellipse farthest-corner, #F2EAE2 0%, #ABA5A1 100%);
-    background-image: radial-gradient(ellipse farthest-corner at center, #F2EAE2 0%, #ABA5A1 100%);*/
+    background-image: radial-gradient(ellipse farthest-corner at center, #F2EAE2 0%, #ABA5A1 100%);
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover;*/
+    background-size: cover;
 }
 
 ul {
